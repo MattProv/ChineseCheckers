@@ -13,6 +13,7 @@ public class EchoMessageHandler extends MessageHandler {
         StringMessage stringMessage = (StringMessage) message.getMessage();
         ServerConnection sc = message.getConnection();
 
+        System.out.println(stringMessage.message);
         Server.getServer().Send(stringMessage, sc);
     }
 }

@@ -72,6 +72,7 @@ public class Server {
                 }
             }
         });
+        listenerThread.start();
     }
 
     public void Disconnect(ServerConnection sc)
