@@ -4,6 +4,6 @@ public enum MessageType
 {
     STRING,
     DISCONNECT,
-    MOVE
-
+    MOVE,
+    COMMAND
 }

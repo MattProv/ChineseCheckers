@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.message.serverHandlers.CommandMessageHandler;
 import org.example.message.serverHandlers.EchoMessageHandler;
 import org.example.message.serverHandlers.MoveMessageHandler;
 import org.example.server.Server;
@@ -13,6 +14,7 @@ public class ServerMain {
 
         server.AddHandler(new EchoMessageHandler());
         server.AddHandler(new MoveMessageHandler());
+        server.AddHandler(new CommandMessageHandler());
         server.Bind(Config.PORT);
         server.Listen();
 

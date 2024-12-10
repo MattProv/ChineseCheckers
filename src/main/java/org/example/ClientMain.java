@@ -1,9 +1,12 @@
 package org.example;
 
 import org.example.client.Client;
+import org.example.client.CommandProcessor;
 import org.example.message.*;
+import org.example.message.clientHandlers.CommandMessageHandler;
 import org.example.message.clientHandlers.EchoMessageHandler;
 import org.example.message.clientHandlers.MoveMessageHandler;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -16,8 +19,11 @@ public class ClientMain {
         // Add message handlers
         client.AddHandler(new MoveMessageHandler());
         client.AddHandler(new EchoMessageHandler());
-
+        client.AddHandler(new CommandMessageHandler());
         boolean isConnected = false;
+        boolean gameStarted = false;
+        boolean isYourTurn = false;
+
 
         System.out.println("Welcome to the Client Application!");
 
@@ -70,17 +76,53 @@ public class ClientMain {
                 case 2:
                     if (!isConnected) {
                         System.out.println("You are not connected to a server. Please connect first.");
-                    } else {
-                        System.out.print("Enter the first part of your message: ");
-                        String part1 = scanner.nextLine();
-                        System.out.print("Enter the second part of your message: ");
-                        String part2 = scanner.nextLine();
-
-                        MoveMessage moveMessage = new MoveMessage(part1, part2);
-                        if (client.send(moveMessage)) {
-                            System.out.println("Message sent successfully.");
-                        } else {
-                            System.out.println("Failed to send the message.");
+                    }
+                    else {
+                        System.out.print("Enter your message: ");
+                        String input = scanner.nextLine();
+                        String[] parts;
+                        if (!gameStarted) {
+                            if (!(input.charAt(0) == '/')) {
+                                StringMessage stringMessage = new StringMessage(input);
+                                if (client.send(stringMessage)) {
+                                    System.out.println("Message sent successfully.");
+                                } else {
+                                    System.out.println("Failed to send the message.");
+                                }
+                            }
+                        else {
+                            parts = input.substring(1).trim().split("\\s+");
+                            if (CommandProcessor.processInput(parts)) {
+                                CommandMessage commandMessage = new CommandMessage(parts);
+                                if (client.send(commandMessage)) {
+                                    System.out.println("Command sent successfully.");
+                                }
+                                else {
+                                    System.out.println("Failed to send the command.");
+                                }
+                            }
+                            else {
+                                System.out.println("Invalid input. Please try again.");
+                            }
+                        }
+                        }
+                        else if (!isYourTurn) {
+                            System.out.print("It's not your turn right now!");
+                            break;
+                        }
+                        else {
+                            parts = input.trim().split("\\s+");
+                            while (parts.length != 2) {
+                                System.out.print("Incorrect input. Provide start and end square of your move.");
+                                input = scanner.nextLine();
+                                parts = input.trim().split("\\s+");
+                            }
+                            MoveMessage moveMessage = new MoveMessage(parts[0], parts[1]);
+                            if (client.send(moveMessage)) {
+                                System.out.println("Message sent successfully.");
+                            } else {
+                                System.out.println("Failed to send the message.");
+                            }
                         }
                     }
                     break;
