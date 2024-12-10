@@ -144,4 +144,8 @@ public class Server {
             }
         }
     }
+
+    public List<ServerConnection> getConnections() {
+        return connections;
+    }
 }

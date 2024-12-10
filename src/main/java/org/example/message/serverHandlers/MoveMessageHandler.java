@@ -4,14 +4,17 @@ import org.example.message.MessageHandler;
 import org.example.message.MessageSenderPair;
 import org.example.message.MessageType;
 import org.example.message.MoveMessage;
-import org.example.server.Server;
+import org.example.server.GameManager;
 import org.example.server.ServerConnection;
 
-import java.util.Arrays;
-
 public class MoveMessageHandler extends MessageHandler {
-    public MoveMessageHandler() {
+
+    GameManager gameManager;
+
+    public MoveMessageHandler(GameManager gameManager)
+    {
         super(MessageType.MOVE);
+        this.gameManager = gameManager;
     }
 
     @Override
@@ -19,7 +22,10 @@ public class MoveMessageHandler extends MessageHandler {
         MoveMessage moveMessage = (MoveMessage) message.getMessage();
         ServerConnection sc = message.getConnection();
 
-        System.out.println(Arrays.toString(moveMessage.getMessage()));
-        Server.getServer().Broadcast(moveMessage);
+        gameManager.makeMove(
+                gameManager.getPlayerByConnection(sc),
+                moveMessage.getStart(),
+                moveMessage.getEnd()
+        );
     }
 }

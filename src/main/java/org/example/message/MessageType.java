@@ -5,5 +5,6 @@ public enum MessageType
     STRING,
     DISCONNECT,
     MOVE,
-    COMMAND
+    COMMAND,
+    GAMESTATE
 }

@@ -1,7 +1,6 @@
 package org.example.message;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
 
 /**
  * Message class used to send messages between the server and the client
@@ -23,4 +22,6 @@ public abstract class Message implements Serializable{
     public MessageType getType() {
         return type;
     }
+
+    public abstract String toString();
 }

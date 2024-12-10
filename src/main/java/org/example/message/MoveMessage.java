@@ -1,5 +1,7 @@
 package org.example.message;
 
+import java.util.Arrays;
+
 public class MoveMessage extends Message {
     String[] message; // the message content
 
@@ -13,5 +15,18 @@ public class MoveMessage extends Message {
     public String[] getMessage()
     {
         return this.message;
+    }
+
+    public String toString()
+    {
+        return Arrays.toString(message);
+    }
+
+    public String getStart() {
+        return message[0];
+    }
+
+    public String getEnd() {
+        return message[1];
     }
 }

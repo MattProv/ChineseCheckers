@@ -4,20 +4,39 @@ import org.example.message.CommandMessage;
 import org.example.message.MessageHandler;
 import org.example.message.MessageSenderPair;
 import org.example.message.MessageType;
+import org.example.server.GameManager;
 import org.example.server.Server;
 import org.example.server.ServerConnection;
 
-import java.util.Arrays;
-
 public class CommandMessageHandler extends MessageHandler {
-    public CommandMessageHandler() {super(MessageType.COMMAND);}
+    GameManager gameManager;
+
+    public CommandMessageHandler(GameManager gm) {
+        super(MessageType.COMMAND);
+        gameManager = gm;
+    }
 
     @Override
     public void handle(MessageSenderPair message) {
         CommandMessage commandMessage = (CommandMessage) message.getMessage();
         ServerConnection sc = message.getConnection();
 
-        System.out.println(Arrays.toString(commandMessage.getMessage()));
-        Server.getServer().Broadcast(commandMessage);
+        switch (commandMessage.getCommand()) {
+            case SET_PLAYER_COUNT:
+                try {
+                    int newPlayerCount = Integer.parseInt(commandMessage.getMessage()[1]);
+                    gameManager.setPlayerCount(newPlayerCount);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case START_GAME:
+                gameManager.startGame(Server.getServer().getConnections());
+                break;
+            default:
+                System.out.println(commandMessage.getCommand().name() + " not implemented.");
+                break;
+        }
     }
 }

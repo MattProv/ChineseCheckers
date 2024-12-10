@@ -12,4 +12,9 @@ public class StringMessage extends Message {
     public String getMessage() {
         return message;
     }
+
+    public String toString()
+    {
+        return message;
+    }
 }

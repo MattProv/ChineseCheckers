@@ -35,8 +35,8 @@ public class ServerConnection implements Runnable
 
         try
         {
-            oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
+            oos = new ObjectOutputStream(socket.getOutputStream());
 
             listenerThread = new Thread(this);
             listenerThread.start();
@@ -55,6 +55,7 @@ public class ServerConnection implements Runnable
     public <T extends Message> void send(T message) throws IOException
     {
         oos.writeObject(message);
+        oos.flush();
     }
 
     /**

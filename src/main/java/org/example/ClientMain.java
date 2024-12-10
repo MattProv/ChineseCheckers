@@ -3,9 +3,7 @@ package org.example;
 import org.example.client.Client;
 import org.example.client.CommandProcessor;
 import org.example.message.*;
-import org.example.message.clientHandlers.CommandMessageHandler;
-import org.example.message.clientHandlers.EchoMessageHandler;
-import org.example.message.clientHandlers.MoveMessageHandler;
+import org.example.message.clientHandlers.GameStateMessageHandler;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -16,13 +14,14 @@ public class ClientMain {
         Scanner scanner = new Scanner(System.in);
         Client client = new Client();
 
-        // Add message handlers
-        client.AddHandler(new MoveMessageHandler());
-        client.AddHandler(new EchoMessageHandler());
-        client.AddHandler(new CommandMessageHandler());
+        GameState gameState = new GameState();
+
+        for(MessageType type : MessageType.values()) {
+            client.AddHandler(new LogMessageHandler(type));
+        }
+        client.AddHandler(new GameStateMessageHandler(gameState));
         boolean isConnected = false;
-        boolean gameStarted = false;
-        boolean isYourTurn = false;
+        boolean isYourTurn = true;
 
 
         System.out.println("Welcome to the Client Application!");
@@ -81,7 +80,7 @@ public class ClientMain {
                         System.out.print("Enter your message: ");
                         String input = scanner.nextLine();
                         String[] parts;
-                        if (!gameStarted) {
+                        if (!gameState.isRunning()) {
                             if (!(input.charAt(0) == '/')) {
                                 StringMessage stringMessage = new StringMessage(input);
                                 if (client.send(stringMessage)) {
@@ -90,21 +89,21 @@ public class ClientMain {
                                     System.out.println("Failed to send the message.");
                                 }
                             }
-                        else {
-                            parts = input.substring(1).trim().split("\\s+");
-                            if (CommandProcessor.processInput(parts)) {
-                                CommandMessage commandMessage = new CommandMessage(parts);
-                                if (client.send(commandMessage)) {
-                                    System.out.println("Command sent successfully.");
+                            else {
+                                parts = input.substring(1).trim().split("\\s+");
+                                if (CommandProcessor.processInput(parts)) {
+                                    CommandMessage commandMessage = new CommandMessage(Commands.fromString(parts[0]), parts);
+                                    if (client.send(commandMessage)) {
+                                        System.out.println("Command sent successfully.");
+                                    }
+                                    else {
+                                        System.out.println("Failed to send the command.");
+                                    }
                                 }
                                 else {
-                                    System.out.println("Failed to send the command.");
+                                    System.out.println("Invalid input. Please try again.");
                                 }
                             }
-                            else {
-                                System.out.println("Invalid input. Please try again.");
-                            }
-                        }
                         }
                         else if (!isYourTurn) {
                             System.out.print("It's not your turn right now!");
@@ -119,9 +118,9 @@ public class ClientMain {
                             }
                             MoveMessage moveMessage = new MoveMessage(parts[0], parts[1]);
                             if (client.send(moveMessage)) {
-                                System.out.println("Message sent successfully.");
+                                System.out.println("Move sent successfully.");
                             } else {
-                                System.out.println("Failed to send the message.");
+                                System.out.println("Failed to send the move.");
                             }
                         }
                     }
