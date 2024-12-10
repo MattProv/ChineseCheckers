@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.client.Client;
 import org.example.message.*;
+import org.example.message.clientHandlers.EchoMessageHandler;
 import org.example.message.clientHandlers.MoveMessageHandler;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -14,6 +15,7 @@ public class ClientMain {
 
         // Add message handlers
         client.AddHandler(new MoveMessageHandler());
+        client.AddHandler(new EchoMessageHandler());
 
         boolean isConnected = false;
 
