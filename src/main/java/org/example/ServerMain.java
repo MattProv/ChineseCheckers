@@ -26,7 +26,6 @@ public class ServerMain {
         server.Listen();
 
         while (true) {
-            server.HandleMessages();
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {

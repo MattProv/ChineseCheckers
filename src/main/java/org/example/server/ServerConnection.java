@@ -81,7 +81,7 @@ public class ServerConnection implements Runnable
 
                 synchronized(server)
                 {
-                    server.messageQueue.add(new MessageSenderPair(msg, this));
+                    server.AddMessageToQueue(msg, this);
                 }
             } while (server.running && !msg.getType().equals(MessageType.DISCONNECT));
 
