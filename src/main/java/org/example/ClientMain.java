@@ -12,7 +12,7 @@ public class ClientMain {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Client client = new Client();
+        Client client = Client.create();
 
         GameState gameState = new GameState();
 
@@ -26,7 +26,7 @@ public class ClientMain {
         System.out.println("Welcome to the Client Application!");
 
         while (true) {
-            client.HandleMessages();
+            //client.HandleMessages();
             System.out.println("\nMenu:");
             System.out.println("1. Connect to Server");
             System.out.println("2. Send Message");

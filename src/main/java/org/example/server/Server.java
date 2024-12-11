@@ -23,6 +23,8 @@ public class Server {
     Queue<MessageSenderPair> messageQueue = new LinkedList<>();
     List<ServerConnection> connections = new ArrayList<>();
 
+    public ServerCallbacksHandler serverCallbacksHandler = new ServerCallbacksHandler();
+
     boolean running = false;
 
     private Server()
@@ -67,6 +69,7 @@ public class Server {
                 try {
                     ServerConnection sc = new ServerConnection(serverSocket.accept());
                     connections.add(sc);
+                    serverCallbacksHandler.onNewConnection(sc);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -83,6 +86,7 @@ public class Server {
             e.printStackTrace();
         }
         connections.remove(sc);
+        serverCallbacksHandler.onConnectionClosed(sc);
     }
 
     public void Shutdown()
@@ -109,6 +113,7 @@ public class Server {
     {
         try {
             sc.send(message);
+            serverCallbacksHandler.onMessageSent(sc, message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -147,5 +152,11 @@ public class Server {
 
     public List<ServerConnection> getConnections() {
         return connections;
+    }
+
+    public void AddMessageToQueue(Message message, ServerConnection sc)
+    {
+        messageQueue.add(new MessageSenderPair(message, sc));
+        serverCallbacksHandler.onMessageReceived(sc, message);
     }
 }
