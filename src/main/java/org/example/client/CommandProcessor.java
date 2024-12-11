@@ -20,7 +20,7 @@ public abstract class CommandProcessor {
         if (input.length == command.getExpectedParts())
             return true;
         else {
-            System.out.println("Wrong number of arguments: " + (input.length - 1) + ", expected: " + command.getExpectedParts());
+            System.out.println("Wrong number of arguments: " + (input.length - 1) + ", expected: " + command.getExpectedParts() + "\n");
             return false;
         }
     }

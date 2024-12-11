@@ -20,7 +20,6 @@ public class ClientMain {
             client.AddHandler(new LogMessageHandler(type));
         }
         client.AddHandler(new GameStateMessageHandler(gameState));
-        boolean isConnected = false;
         boolean isYourTurn = true;
 
 
@@ -47,7 +46,7 @@ public class ClientMain {
 
             switch (choice) {
                 case 1:
-                    if (isConnected) {
+                    if (client.isConnected()) {
                         System.out.println("Already connected to a server!");
                     } else {
                         System.out.print("Enter server host: ");
@@ -64,7 +63,6 @@ public class ClientMain {
                         }
 
                         if (client.Connect(host, port)) {
-                            isConnected = true;
                             System.out.println("Connected to the server successfully.");
                         } else {
                             System.out.println("Failed to connect to the server.");
@@ -73,7 +71,7 @@ public class ClientMain {
                     break;
 
                 case 2:
-                    if (!isConnected) {
+                    if (!client.isConnected()) {
                         System.out.println("You are not connected to a server. Please connect first.");
                     }
                     else {
@@ -127,9 +125,8 @@ public class ClientMain {
                     break;
 
                 case 3:
-                    if (isConnected) {
+                    if (client.isConnected()) {
                         client.Disconnect();
-                        isConnected = false;
                         System.out.println("Disconnected from the server.");
                     } else {
                         System.out.println("You are not connected to any server.");
@@ -137,7 +134,7 @@ public class ClientMain {
                     break;
 
                 case 4:
-                    if (isConnected) {
+                    if (client.isConnected()) {
                         client.Disconnect();
                     }
                     System.out.println("Exiting the application.");

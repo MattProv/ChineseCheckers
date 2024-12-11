@@ -2,10 +2,13 @@ package org.example.client;
 
 import org.example.message.*;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -60,8 +63,15 @@ public class Client implements Runnable{
         }
         catch (UnknownHostException ex)
         {
-            System.out.println("Server not found: " + ex.getMessage());
-        } catch (IOException e)
+            System.out.println("Server not found: " + ex.getMessage()+"\n");
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println("Invalid host/port!\n");
+        }
+        catch (ConnectException ex) {
+            System.out.println("Connection Refused.\n");
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -112,6 +122,8 @@ public class Client implements Runnable{
             socket.close();
             socket = null;
         }
+        catch (SocketException _) {
+        }
         catch (IOException e)
         {
             e.printStackTrace();
@@ -133,6 +145,9 @@ public class Client implements Runnable{
             oos.writeObject(message);
             return true;
         }
+        catch (SocketException _) {
+            return false;
+        }
         catch (Exception e)
         {
             e.printStackTrace();
@@ -145,6 +160,11 @@ public class Client implements Runnable{
         try
         {
             return (Message) ois.readObject();
+        }
+        catch (EOFException e) {
+            Disconnect();
+            System.out.println("\nConnection to the server lost");
+            return null;
         }
         catch (Exception e)
         {
@@ -180,5 +200,9 @@ public class Client implements Runnable{
                 messageHandler.handle(messageSenderPair);
             }
         }
+    }
+
+    public boolean isConnected() {
+        return socket != null && socket.isConnected();
     }
 }

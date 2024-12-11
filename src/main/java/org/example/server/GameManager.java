@@ -4,6 +4,7 @@ import org.example.Board;
 import org.example.GameState;
 import org.example.Player;
 import org.example.message.GameStateMessage;
+import org.example.message.StringMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,9 @@ public class GameManager {
         }
 
         if (users.size() != playerCount) {
+            StringMessage msg = new StringMessage("Game cannot be started, " + users.size() + " users connected out of " + playerCount + " required!");
+            Server.getServer().Broadcast(msg);
+            //System.out.println("Game cannot be started, " + users.size() + " users connected out of " + playerCount + " required!");
             return false;
         }
 
