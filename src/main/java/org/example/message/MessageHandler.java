@@ -2,9 +2,9 @@ package org.example.message;
 
 public abstract class MessageHandler
 {
-    protected MessageType messageType;
+    private MessageType messageType;
 
-    public MessageHandler(MessageType messageType)
+    public MessageHandler(final MessageType messageType)
     {
         this.messageType = messageType;
     }

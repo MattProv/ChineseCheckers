@@ -1,14 +1,12 @@
 package org.example;
 
-import org.example.message.LogMessageHandler;
-import org.example.message.MessageType;
 import org.example.message.serverHandlers.CommandMessageHandler;
 import org.example.message.serverHandlers.MoveMessageHandler;
 import org.example.server.GameManager;
 import org.example.server.Server;
 
 public class ServerMain {
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
         System.out.println("Hello World from Server!");
 

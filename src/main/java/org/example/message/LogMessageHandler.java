@@ -2,13 +2,13 @@ package org.example.message;
 
 import org.example.server.ServerConnection;
 
-public class LogMessageHandler extends MessageHandler {
-    public LogMessageHandler(MessageType type) {
+public final class LogMessageHandler extends MessageHandler {
+    public LogMessageHandler(final MessageType type) {
         super(type);
     }
 
     @Override
-    public void handle(MessageSenderPair message) {
+    public void handle(final MessageSenderPair message) {
         Message msg = message.getMessage();
         ServerConnection sc = message.getConnection();
 

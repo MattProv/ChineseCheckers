@@ -2,10 +2,10 @@ package org.example;
 
 import org.example.server.ServerConnection;
 
-public class Player {
-    ServerConnection owner;
+public final class Player {
+    private ServerConnection owner;
 
-    public Player(ServerConnection owner) {
+    public Player(final ServerConnection owner) {
         this.owner = owner;
     }
 

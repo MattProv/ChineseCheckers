@@ -3,9 +3,9 @@ package org.example.message;
 import java.util.Arrays;
 
 public class MoveMessage extends Message {
-    String[] message; // the message content
+    private String[] message; // the message content
 
-    public MoveMessage(String start, String end)
+    public MoveMessage(final String start, final String end)
     {
         super(MessageType.MOVE);
         this.message = new String[]{start, end};

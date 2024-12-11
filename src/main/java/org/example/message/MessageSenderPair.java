@@ -3,10 +3,10 @@ package org.example.message;
 import org.example.server.ServerConnection;
 
 public class MessageSenderPair {
-    Message message;
-    ServerConnection connection;
+    private Message message;
+    private ServerConnection connection;
 
-    public MessageSenderPair(Message message, ServerConnection connection) {
+    public MessageSenderPair(final Message message, final ServerConnection connection) {
         this.message = message;
         this.connection = connection;
     }

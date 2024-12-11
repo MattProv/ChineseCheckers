@@ -2,12 +2,12 @@ package org.example.message;
 
 import org.example.GameState;
 
-public class GameStateMessage extends Message {
+public final class GameStateMessage extends Message {
 
-    GameState gameState;
+    private final GameState gameState;
     //current turn
 
-    public GameStateMessage(GameState gameState) {
+    public GameStateMessage(final GameState gameState) {
         super(MessageType.GAMESTATE);
         this.gameState = gameState;
     }

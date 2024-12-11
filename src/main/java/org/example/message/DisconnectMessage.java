@@ -1,6 +1,6 @@
 package org.example.message;
 
-public class DisconnectMessage extends Message{
+public final class DisconnectMessage extends Message{
     public DisconnectMessage(){
         super(MessageType.DISCONNECT);
     }

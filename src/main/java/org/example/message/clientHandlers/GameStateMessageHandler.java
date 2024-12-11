@@ -9,7 +9,7 @@ import org.example.message.MessageType;
 
 public class GameStateMessageHandler extends MessageHandler {
 
-    GameState gameState;
+    private final GameState gameState;
 
     public GameStateMessageHandler(GameState gm) {
         super(MessageType.GAMESTATE);
@@ -17,13 +17,12 @@ public class GameStateMessageHandler extends MessageHandler {
     }
 
     @Override
-    public void handle(MessageSenderPair message) {
+    public void handle(final MessageSenderPair message) {
         GameStateMessage bm = (GameStateMessage) message.getMessage();
         TestBoard board = (TestBoard) bm.getGameState().getBoard();
 
         gameState.setState(bm.getGameState());
 
         gameState.getBoard().showBoard();
-        board.showBoard();
     }
 }

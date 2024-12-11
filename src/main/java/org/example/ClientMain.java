@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class ClientMain {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         Scanner scanner = new Scanner(System.in);
         Client client = Client.create();
 

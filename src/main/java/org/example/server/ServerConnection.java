@@ -1,7 +1,6 @@
 package org.example.server;
 
 import org.example.message.Message;
-import org.example.message.MessageSenderPair;
 import org.example.message.MessageType;
 
 import java.io.*;
@@ -13,22 +12,22 @@ import java.net.Socket;
  */
 public class ServerConnection implements Runnable
 {
-    final Socket socket; // the socket used to connect to the client
-    final Server server; // the server that created this connection
+    private final Socket socket; // the socket used to connect to the client
+    private final Server server; // the server that created this connection
 
     // the output and input streams used to send and receive messages
-    ObjectOutputStream oos;
-    ObjectInputStream ois;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
 
     // the thread used to listen for messages from the client
-    Thread listenerThread;
+    private Thread listenerThread;
 
     /**
      * Constructor for the ConnectionThread class
      * Sets the values, creates the output and input streams and starts the listener thread
      * @param socket the socket used to connect to the client
      */
-    ServerConnection(Socket socket)
+    ServerConnection(final Socket socket)
     {
         this.socket = socket;
         this.server = Server.getServer();
@@ -52,7 +51,7 @@ public class ServerConnection implements Runnable
      * @param message the message to send
      * @see Message
      */
-    public <T extends Message> void send(T message) throws IOException
+    public <T extends Message> void send(final T message) throws IOException
     {
         oos.writeObject(message);
         oos.flush();
@@ -83,7 +82,7 @@ public class ServerConnection implements Runnable
                 {
                     server.AddMessageToQueue(msg, this);
                 }
-            } while (server.running && !msg.getType().equals(MessageType.DISCONNECT));
+            } while (server.isRunning() && !msg.getType().equals(MessageType.DISCONNECT));
 
             socket.close();
         } catch (IOException ex) {
@@ -95,5 +94,9 @@ public class ServerConnection implements Runnable
         }
 
         server.Disconnect(this);
+    }
+
+    Socket getSocket() {
+        return socket;
     }
 }

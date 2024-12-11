@@ -8,10 +8,10 @@ import org.example.server.GameManager;
 import org.example.server.Server;
 import org.example.server.ServerConnection;
 
-public class CommandMessageHandler extends MessageHandler {
-    GameManager gameManager;
+public final class CommandMessageHandler extends MessageHandler {
+    private final GameManager gameManager;
 
-    public CommandMessageHandler(GameManager gm) {
+    public CommandMessageHandler(final GameManager gm) {
         super(MessageType.COMMAND);
         gameManager = gm;
     }

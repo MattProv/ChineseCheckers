@@ -6,7 +6,7 @@ public enum Commands {
 
     private final int expectedParts;
 
-    Commands(int expectedParts) {
+    Commands(final int expectedParts) {
         this.expectedParts = expectedParts;
     }
 
@@ -15,7 +15,7 @@ public enum Commands {
     }
 
     // Method to fetch the enum constant by name (ignoring case)
-    public static Commands fromString(String command) {
+    public static Commands fromString(final String command) {
         for (Commands c : Commands.values()) {
             if (c.name().equalsIgnoreCase(command)) {
                 return c;

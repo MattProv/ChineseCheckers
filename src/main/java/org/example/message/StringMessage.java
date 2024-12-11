@@ -1,9 +1,9 @@
 package org.example.message;
 
-public class StringMessage extends Message {
-    String message; // the message content
+public final class StringMessage extends Message {
+    private final String message; // the message content
 
-    public StringMessage(String message)
+    public StringMessage(final String message)
     {
         super(MessageType.STRING);
         this.message = message;

@@ -1,10 +1,9 @@
 package org.example;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TestBoard extends Board implements Serializable {
+public final class TestBoard extends Board implements Serializable {
     private static final long serialVersionUID = 1L; // Opcjonalne, ale zalecane
 
     private ArrayList<String> moves = new ArrayList<>();
@@ -16,7 +15,7 @@ public class TestBoard extends Board implements Serializable {
     }
 
     @Override
-    public void move(String start, String end) {
+    public void move(final String start, final String end) {
         String mv = start + " -> " + end;
         moves.add(mv);
         lastMove = mv;

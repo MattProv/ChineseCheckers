@@ -2,13 +2,13 @@ package org.example;
 
 import java.io.Serializable;
 
-public class GameState implements Serializable, Cloneable {
+public final class GameState implements Serializable, Cloneable {
     private static final long serialVersionUID = 1L;
 
     private Board board;
     private boolean isRunning;
 
-    public GameState(Board board, boolean isRunning) {
+    public GameState(final Board board, final boolean isRunning) {
         this.board = board;
         this.isRunning = isRunning;
     }
@@ -26,16 +26,16 @@ public class GameState implements Serializable, Cloneable {
         return isRunning;
     }
 
-    public void setState(GameState state) {
+    public void setState(final GameState state) {
         this.isRunning = state.isRunning;
         this.board = state.board;
     }
 
-    public void setRunning(boolean b) {
+    public void setRunning(final boolean b) {
         this.isRunning = b;
     }
 
-    public void setBoard(Board board) {
+    public void setBoard(final Board board) {
         this.board = board;
     }
 

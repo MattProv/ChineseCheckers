@@ -4,12 +4,11 @@ import org.example.Board;
 import org.example.GameState;
 import org.example.Player;
 import org.example.message.GameStateMessage;
-import org.example.message.StringMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameManager {
+public final class GameManager {
     private static GameManager instance = new GameManager();
     //SETTINGS
     private int playerCount = 2;
@@ -18,7 +17,7 @@ public class GameManager {
     private GameState gameState = new GameState();
     private List<Player> players = new ArrayList<Player>();
 
-    public GameManagerCallbackHandler gameManagerCallbackHandler = new GameManagerCallbackHandler();
+    private GameManagerCallbackHandler gameManagerCallbackHandler = new GameManagerCallbackHandler();
 
     private GameManager()
     {
@@ -35,7 +34,7 @@ public class GameManager {
         return instance;
     }
 
-    public boolean startGame(List<ServerConnection> users) {
+    public boolean startGame(final List<ServerConnection> users) {
         if (gameState.isRunning()) {
             gameManagerCallbackHandler.onGameNotStarted("Game already running!");
             return false;
@@ -61,14 +60,14 @@ public class GameManager {
         return true;
     }
 
-    public boolean setBoard(Board board) {
+    public boolean setBoard(final Board board) {
         if(gameState.isRunning())
             return false;
         gameState.setBoard(board);
         return true;
     }
 
-    public boolean setPlayerCount(int playerCount) {
+    public boolean setPlayerCount(final int playerCount) {
         if(gameState.isRunning()) {
             gameManagerCallbackHandler.onPlayerCountNotChanged(playerCount, "Game already running!");
             return false;
@@ -82,7 +81,7 @@ public class GameManager {
         return true;
     }
 
-    public boolean makeMove(Player player, String start, String end)
+    public boolean makeMove(final Player player, final String start, final String end)
     {
         if(!gameState.isRunning())
             return false;

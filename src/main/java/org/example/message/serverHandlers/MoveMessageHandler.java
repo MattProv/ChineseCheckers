@@ -7,18 +7,17 @@ import org.example.message.MoveMessage;
 import org.example.server.GameManager;
 import org.example.server.ServerConnection;
 
-public class MoveMessageHandler extends MessageHandler {
+public final class MoveMessageHandler extends MessageHandler {
 
-    GameManager gameManager;
+    private final GameManager gameManager;
 
-    public MoveMessageHandler(GameManager gameManager)
-    {
+    public MoveMessageHandler(final GameManager gameManager)  {
         super(MessageType.MOVE);
         this.gameManager = gameManager;
     }
 
     @Override
-    public void handle(MessageSenderPair message) {
+    public void handle(final MessageSenderPair message) {
         MoveMessage moveMessage = (MoveMessage) message.getMessage();
         ServerConnection sc = message.getConnection();
 

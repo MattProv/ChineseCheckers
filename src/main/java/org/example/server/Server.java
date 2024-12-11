@@ -11,21 +11,21 @@ import java.util.Queue;
 
 //TODO:
 // Implement logging rather than println and printStackTrace
-public class Server {
+public final class Server {
 
     private static Server instance;
 
-    List<MessageHandler> messageHandlers = new ArrayList<>();
+    private final List<MessageHandler> messageHandlers = new ArrayList<>();
 
-    Thread listenerThread;
-    ServerSocket serverSocket;
+    private Thread listenerThread;
+    private ServerSocket serverSocket;
 
-    Queue<MessageSenderPair> messageQueue = new LinkedList<>();
-    List<ServerConnection> connections = new ArrayList<>();
+    private final Queue<MessageSenderPair> messageQueue = new LinkedList<>();
+    private final List<ServerConnection> connections = new ArrayList<>();
 
-    public ServerCallbacksHandler serverCallbacksHandler = new ServerCallbacksHandler();
+    private ServerCallbacksHandler serverCallbacksHandler = new ServerCallbacksHandler();
 
-    boolean running = false;
+    private boolean running = false;
 
     private Server()
     {
@@ -81,7 +81,7 @@ public class Server {
     public void Disconnect(ServerConnection sc)
     {
         try {
-            sc.socket.close();
+            sc.getSocket().close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,7 +98,7 @@ public class Server {
         }
     }
 
-    public List<MessageHandler> getMessageHandlersOfType(MessageType type) {
+    public List<MessageHandler> getMessageHandlersOfType(final MessageType type) {
         List<MessageHandler> handlers = new ArrayList<>();
         for (MessageHandler messageHandler : messageHandlers) {
             if(messageHandler.getMessageType() == type) {
@@ -109,7 +109,7 @@ public class Server {
         return handlers;
     }
 
-    public void Send(Message message, ServerConnection sc)
+    public void Send(final Message message, final ServerConnection sc)
     {
         try {
             sc.send(message);
@@ -119,7 +119,7 @@ public class Server {
         }
     }
 
-    public void Send(Message message, List<ServerConnection> recipients)
+    public void Send(final Message message, final List<ServerConnection> recipients)
     {
         for(ServerConnection sc : recipients)
         {
@@ -127,12 +127,12 @@ public class Server {
         }
     }
 
-    public void Broadcast(Message message)
+    public void Broadcast(final Message message)
     {
         Send(message, connections);
     }
 
-    public void AddHandler(MessageHandler handler)
+    public void AddHandler(final MessageHandler handler)
     {
         messageHandlers.add(handler);
     }
@@ -154,9 +154,13 @@ public class Server {
         return connections;
     }
 
-    public void AddMessageToQueue(Message message, ServerConnection sc)
+    public void AddMessageToQueue(final Message message, final ServerConnection sc)
     {
         messageQueue.add(new MessageSenderPair(message, sc));
         serverCallbacksHandler.onMessageReceived(sc, message);
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 }
