@@ -2,7 +2,7 @@ package org.example.message;
 
 public abstract class MessageHandler
 {
-    private MessageType messageType;
+    private final MessageType messageType;
 
     public MessageHandler(final MessageType messageType)
     {

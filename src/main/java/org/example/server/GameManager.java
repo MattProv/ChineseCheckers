@@ -14,10 +14,10 @@ public final class GameManager {
     private int playerCount = 2;
 
     //RUNTIME
-    private GameState gameState = new GameState();
-    private List<Player> players = new ArrayList<Player>();
+    private final GameState gameState = new GameState();
+    private final List<Player> players = new ArrayList<Player>();
 
-    private GameManagerCallbackHandler gameManagerCallbackHandler = new GameManagerCallbackHandler();
+    private final GameManagerCallbackHandler gameManagerCallbackHandler = new GameManagerCallbackHandler();
 
     private GameManager()
     {

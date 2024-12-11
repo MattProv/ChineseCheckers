@@ -3,7 +3,7 @@ package org.example.message;
 import java.util.Arrays;
 
 public class MoveMessage extends Message {
-    private String[] message; // the message content
+    private final String[] message; // the message content
 
     public MoveMessage(final String start, final String end)
     {
