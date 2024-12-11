@@ -182,6 +182,9 @@ public class Client implements Runnable{
             System.out.println("\nConnection to the server lost");
             return null;
         }
+        catch (SocketException _) {
+            return null;
+        }
         catch (Exception e)
         {
             e.printStackTrace();
