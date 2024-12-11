@@ -16,9 +16,6 @@ public class ClientMain {
 
         GameState gameState = new GameState();
 
-        for(MessageType type : MessageType.values()) {
-            client.AddHandler(new LogMessageHandler(type));
-        }
         client.AddHandler(new GameStateMessageHandler(gameState));
         boolean isYourTurn = true;
 

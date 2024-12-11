@@ -12,14 +12,11 @@ public class ServerMain {
 
         System.out.println("Hello World from Server!");
 
-        GameManager gameManager = new GameManager();
+        GameManager gameManager = GameManager.create();
         gameManager.setBoard(new TestBoard());
 
         Server server = Server.create();
 
-        for(MessageType type : MessageType.values()) {
-            server.AddHandler(new LogMessageHandler(type));
-        }
         server.AddHandler(new MoveMessageHandler(gameManager));
         server.AddHandler(new CommandMessageHandler(gameManager));
         server.Bind(Config.PORT);

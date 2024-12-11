@@ -10,12 +10,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameManager {
+    private static GameManager instance = new GameManager();
     //SETTINGS
     private int playerCount = 2;
 
     //RUNTIME
     private GameState gameState = new GameState();
     private List<Player> players = new ArrayList<Player>();
+
+    private GameManager()
+    {
+
+    }
+
+    public static GameManager create()
+    {
+        return instance = new GameManager();
+    }
+
+    public static GameManager getInstance()
+    {
+        return instance;
+    }
 
     public boolean startGame(List<ServerConnection> users) {
         if (gameState.isRunning()) {
