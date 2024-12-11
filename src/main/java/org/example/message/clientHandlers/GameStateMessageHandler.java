@@ -22,8 +22,6 @@ public class GameStateMessageHandler extends MessageHandler {
         TestBoard board = (TestBoard) bm.getGameState().getBoard();
 
         gameState.setState(bm.getGameState());
-
         gameState.getBoard().showBoard();
-        board.showBoard();
     }
 }
