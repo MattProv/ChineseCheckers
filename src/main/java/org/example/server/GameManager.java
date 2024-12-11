@@ -68,6 +68,8 @@ public class GameManager {
     public boolean setPlayerCount(int playerCount) {
         if(gameState.isRunning())
             return false;
+        if(playerCount == 5 || playerCount > 6 || playerCount < 2)
+            return false;
         this.playerCount = playerCount;
         return true;
     }
