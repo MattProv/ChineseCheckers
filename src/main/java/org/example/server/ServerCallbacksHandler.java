@@ -13,13 +13,13 @@ public class ServerCallbacksHandler {
     }
 
     public void onMessageReceived(ServerConnection connection, Message message) {
-        System.out.println("Message received: [" + connection + "] " + message);
+        System.out.println("Message received: [" + connection + "] " + message.getType().name() + " " + message);
         synchronized ( Server.getServer()) {
             Server.getServer().HandleMessages();
         }
     }
 
     public void onMessageSent(ServerConnection connection, Message message) {
-        System.out.println("Message sent: [" + connection + "] " + message);
+        System.out.println("Message sent: [" + connection + "] " + message.getType().name() + " " + message);
     }
 }

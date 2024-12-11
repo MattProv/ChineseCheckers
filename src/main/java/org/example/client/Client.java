@@ -18,6 +18,8 @@ import java.util.Queue;
  */
 public class Client implements Runnable{
 
+    private static Client instance;
+
     //the socket used to connect to the server
     private Socket socket;
 
@@ -32,9 +34,21 @@ public class Client implements Runnable{
     private Queue<MessageSenderPair> messageQueue = new LinkedList<>();
     private List<MessageHandler> messageHandlers =  new ArrayList<>();
 
-    public Client()
+    public ClientCallbacksHandler clientCallbacksHandler= new ClientCallbacksHandler();
+
+    private Client()
     {
 
+    }
+
+    public static Client create()
+    {
+        return instance = new Client();
+    }
+
+    public static Client getClient()
+    {
+        return instance;
     }
 
     /**
@@ -55,6 +69,8 @@ public class Client implements Runnable{
 
             listenerThread = new Thread(this);
             listenerThread.start();
+
+            clientCallbacksHandler.onConnect();
 
             return true;
         }
@@ -77,9 +93,7 @@ public class Client implements Runnable{
             Message msg;
             while (socket != null && socket.isConnected()) {  // Check socket connection
                 msg = read();
-                if (msg != null) {
-                    messageQueue.add(new MessageSenderPair(msg, null));
-                }
+                AddMessageToQueue(msg);
             }
         } catch (NullPointerException ex) {
             System.out.println("Error: Received a null message.");
@@ -116,6 +130,8 @@ public class Client implements Runnable{
         {
             e.printStackTrace();
         }
+
+        clientCallbacksHandler.onDisconnect();
     }
 
 
@@ -131,6 +147,8 @@ public class Client implements Runnable{
         try
         {
             oos.writeObject(message);
+            clientCallbacksHandler.onMessageSent(message);
+
             return true;
         }
         catch (Exception e)
@@ -179,6 +197,14 @@ public class Client implements Runnable{
             {
                 messageHandler.handle(messageSenderPair);
             }
+        }
+    }
+
+    public void AddMessageToQueue(Message msg)
+    {
+        if (msg != null) {
+            messageQueue.add(new MessageSenderPair(msg, null));
+            clientCallbacksHandler.onMessageReceived(msg);
         }
     }
 }
