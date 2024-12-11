@@ -18,6 +18,8 @@ public class GameManager {
     private GameState gameState = new GameState();
     private List<Player> players = new ArrayList<Player>();
 
+    public GameManagerCallbackHandler gameManagerCallbackHandler = new GameManagerCallbackHandler();
+
     private GameManager()
     {
 
@@ -35,17 +37,18 @@ public class GameManager {
 
     public boolean startGame(List<ServerConnection> users) {
         if (gameState.isRunning()) {
+            gameManagerCallbackHandler.onGameNotStarted("Game already running!");
             return false;
         }
 
         if (users.size() != playerCount) {
-            StringMessage msg = new StringMessage("Game cannot be started, " + users.size() + " users connected out of " + playerCount + " required!");
-            Server.getServer().Broadcast(msg);
-            //System.out.println("Game cannot be started, " + users.size() + " users connected out of " + playerCount + " required!");
+            String msg = "Game cannot be started, " + users.size() + " users connected out of " + playerCount + " required!";
+            gameManagerCallbackHandler.onGameNotStarted(msg);
             return false;
         }
 
         if (gameState.getBoard() == null) {
+            gameManagerCallbackHandler.onGameNotStarted("No board set!");
             return false;
         }
 
@@ -54,7 +57,7 @@ public class GameManager {
 
         synchronizeBoard();
 
-        System.out.println("Starting game.");
+        gameManagerCallbackHandler.onGameStarted();
         return true;
     }
 
@@ -66,8 +69,15 @@ public class GameManager {
     }
 
     public boolean setPlayerCount(int playerCount) {
-        if(gameState.isRunning())
+        if(gameState.isRunning()) {
+            gameManagerCallbackHandler.onPlayerCountNotChanged(playerCount, "Game already running!");
             return false;
+        }
+        if(playerCount == 5 || playerCount > 6 || playerCount < 2) {
+            gameManagerCallbackHandler.onPlayerCountNotChanged(playerCount, "Invalid player count!");
+            return false;
+        }
+        gameManagerCallbackHandler.onPlayerCountChanged(this.playerCount, playerCount);
         this.playerCount = playerCount;
         return true;
     }

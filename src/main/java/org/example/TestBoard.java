@@ -32,21 +32,6 @@ public class TestBoard extends Board implements Serializable {
         }
     }
 
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        System.out.println("Rozpoczynamy deserializację...");
-        in.defaultReadObject();
-
-        if (moves == null) {
-            moves = new ArrayList<>();
-        }
-
-        if (lastMove == null) {
-            lastMove = "";
-        }
-
-        System.out.println("Deserializacja zakończona, moves: " + moves + ", lastMove: " + lastMove);
-    }
-
     @Override
     public TestBoard clone() throws CloneNotSupportedException {
         TestBoard cloned = (TestBoard) super.clone();
